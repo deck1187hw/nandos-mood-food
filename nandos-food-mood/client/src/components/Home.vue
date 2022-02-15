@@ -1,0 +1,466 @@
+<template>
+  <div>
+    <div
+      class="
+        relative
+        min-h-screen
+        font-mono
+        bg-gradient-to-r
+        from-blue-500
+        to-pink-500
+        py-6
+        flex flex-col
+        justify-center
+        relative
+        overflow-hidden
+        sm:py-12
+        bg-top-left bg-origin-border bg-clip-border bg-fixed bg-center bg-cover
+      "
+      :style="`
+      background-image: linear-gradient(${spotify.gradient}), url('${spotify.image}');
+      `"
+    >
+      <div
+        class="
+          fixed
+          right-5
+          bottom-5
+          opacity-10
+          text-right text-white
+          tracking-tighter
+        "
+        v-if="spotify.artistName"
+      >
+        <div class="artist-name font-sans text-9xl font-black">
+          {{ spotify.artistName }}
+        </div>
+        <div class="artist-name font-sans font-bold">
+          {{ spotify.songTitle }}
+        </div>
+      </div>
+      <div
+        class="
+          pt-5
+          top-5
+          pb-5
+          max-w-md
+          rounded-none
+          sm:px-10
+          mx-auto
+          text-white
+          z-20
+          xl:fixed
+          font-mono
+          sm:max-w-lg
+        "
+      >
+        <div v-if="action.sso === 'LOGGED_IN'">
+          <div class="audioStats divide-y-2 grid grid-cols-1 text-right">
+            <div class="stats-artist mb-6 mt-3 border-r-2 border-white pr-3">
+              <div class="top-date divide-x" v-if="spotify.artistName">
+                <span class="font-extrabold">{{ spotify.artistName }}</span
+                ><br />
+                <span class="">{{ spotify.songTitle }}</span>
+              </div>
+            </div>
+
+            <Positiveness
+              :audio-features="spotify.audioFeatures"
+              main-text="Positiveness"
+              key-positive="valence"
+            />
+            <Positiveness
+              :audio-features="spotify.audioFeatures"
+              main-text="Danceability"
+              key-positive="danceability"
+            />
+            <Positiveness
+              :audio-features="spotify.audioFeatures"
+              main-text="Energy"
+              key-positive="energy"
+            />
+
+            <div class="peri-total">
+              <div
+                class="`positiveness positiveness-total pt-3 pb-1`"
+                v-if="spotify.audioFeatures"
+              >
+                Peri Total:
+                <span
+                  class="font-bold p-1 pl-3 pr-3 text-xl text-white"
+                  :style="`background-color:${spotify.periTotal.peri.color}`"
+                  >{{ spotify.periTotal.percentage }}% -
+                  {{ spotify.periTotal.peri.title }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="
+            grid grid-flow-row-dense grid-cols-4 grid-rows-1
+            mt-5
+            bg-black bg-opacity-60
+            pb-4
+            pt-3
+          "
+          v-if="userProfile"
+        >
+          <div class="">
+            <div class="md:shrink-0">
+              <img
+                class="mask pl-2"
+                :src="userProfile.images[0].url"
+                :alt="userProfile.display_name"
+              />
+            </div>
+          </div>
+
+          <div class="col-span-3">
+            <div class="pt-3 pl-5">
+              <div
+                class="
+                  uppercase
+                  tracking-wide
+                  text-sm text-white
+                  font-semibold
+                  text-center
+                "
+              >
+                {{ userProfile.display_name }}
+              </div>
+
+              <div class="mt-2 text-white uppercase text-center">
+                <a
+                  :href="userProfile.external_urls.spotify"
+                  target="_blank"
+                  class="mr-3 text-xs underline"
+                  v-on:click="logout"
+                  >Profile</a
+                >
+
+                <a
+                  href="javascript:void(0)"
+                  class="mr-2 text-xs underline"
+                  v-on:click="logout"
+                  >Logout</a
+                >
+              </div>
+              <div class="text-center top-date font-light text-xs mt-2 italic">
+                {{ now }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="
+          relative
+          px-6
+          pt-10
+          pb-8
+          bg-white bg-opacity-80
+          shadow-xl
+          sm:max-w-lg sm:mx-auto sm:px-10
+          rounded-none
+        "
+      >
+        <div class="max-w-md mx-auto">
+          <div class="divide-y">
+            <div
+              v-if="action.listen === 'LISTENING' && action.sso === 'LOGGED_IN'"
+              class="grid grid-cols-1 gap-3 place-items-center"
+            >
+              <div>
+                <img
+                  src="../assets/nandos-logo-bn.png"
+                  style="width: 120px"
+                  class="items-center justify-center opacity-30 mb-5"
+                />
+              </div>
+
+              <Transition name="fade" mode="out-in">
+                <div>
+                  <img
+                    class="mb-10"
+                    v-if="spotify.audioFeatures"
+                    :src="imagePath(spotify.periTotal.peri.title)"
+                    :alt="spotify.periTotal.peri.title"
+                  />
+                </div>
+              </Transition>
+              <Transition name="fade" mode="out-in">
+                <Albumcover
+                  :spotify-image="spotify.image"
+                  :peri-ometer="spotify.periTotal.peri.title"
+                />
+              </Transition>
+
+              <ShareNetwork
+                network="facebook"
+                :url="`${userProfile.external_urls.spotify}`"
+                :title="`Listening to ${spotify.artistName}`"
+                description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
+                :quote="`Listening to ${spotify.periTotal.peri.title}'s ${spotify.artistName}`"
+                :hashtags="`${spotify.artistName.replace(/\s/g, '')}, nando's`"
+              >
+                Share on Facebook
+              </ShareNetwork>
+
+              <div class="grid grid-cols-1 gap-3 place-items-center">
+                <img
+                  src="../assets/Spotify-Black-Logo.wine.svg"
+                  style="width: 120px"
+                  class="items-center justify-center opacity-30"
+                />
+              </div>
+            </div>
+
+            <div v-if="action.listen === 'NOT_LISTENING'" class="text-black">
+              <Nolistening />
+            </div>
+
+            <transition name="fade" mode="out-in">
+              <div v-if="action.sso === 'PLEASE_LOGIN'">
+                <div class="grid grid-cols-2 gap-3 place-items-center mb-7">
+                  <img
+                    src="../assets/Spotify-Black-Logo.wine.svg"
+                    style="width: 140px"
+                    class="items-center justify-center opacity-30"
+                  />
+
+                  <img
+                    src="../assets/nandos-logo-bn.png"
+                    style="width: 120px"
+                    class="items-center justify-center opacity-30 mb-3"
+                  />
+                </div>
+
+                <a
+                  v-on:click="login"
+                  href="javascript:void(0)"
+                  class="
+                    flex
+                    items-center
+                    justify-center
+                    rounded-none
+                    w-full
+                    px-14
+                    py-2
+                    mt-2
+                    space-x-3
+                    text-2xl text-center
+                    bg-transparent
+                    transition-colors
+                    duration-200
+                    transform
+                    border
+                    font-sans
+                    dark:text-white
+                    dark:border-white
+                    dark:hover:bg-white
+                    dark:hover:text-black
+                    hover:bg-black hover:text-white
+                    subpixel-antialiased
+                    font-bold
+                    border-black
+                    uppercase
+                    text-black
+                    tracking-wide
+                    animate-bounce
+                  "
+                >
+                  <span class="text-xl">What are you listening?</span></a
+                >
+                <p class="text-center text-sm mt-7 opacity-60 text-black">
+                  Click above to give permission
+                  <br />
+                  <small
+                    >We won't share any information with anyone or store it
+                    anywhere</small
+                  >
+                </p>
+              </div>
+            </transition>
+
+            <div class="divide-y divide-gray-400/50 my-5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import _ from "lodash";
+const spotify = require("../utils/spotify");
+import goAuthorizationURI from "../utils/pkce-spotify";
+import { getCurrentUserProfile } from "../services/user-service";
+import { getCurrentListening } from "../services/nandos-service";
+import { getToken, refreshToken, logout } from "../utils/pkce-spotify";
+// import Playback from "./Playback";
+const DEFAULT_TIME = "dd MMMM yyyy HH:mm:ss";
+
+import Positiveness from "./Positiveness";
+import Nolistening from "./Nolistening";
+import Albumcover from "./Albumcover";
+
+const defaultSpotify = {
+  image: null,
+  songTitle: null,
+  albumName: null,
+  albumYear: null,
+  artistName: null,
+  audioFeatures: null,
+  gradient: `rgba(42, 51, 61, 1), rgba(66, 78, 92, 1)`,
+};
+export default {
+  name: "Home",
+  metaInfo: {
+    title: "Nando's Peri Mood",
+    htmlAttrs: {
+      lang: "en",
+      amp: false,
+    },
+    meta: [
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "description", content: "Find out the mood of a song based on its valance, danceability and energy" },
+    ],
+  },
+  components: {
+    // Playback,
+    Positiveness,
+    Nolistening,
+    Albumcover,
+  },
+  data: function () {
+    return {
+      envs: process.env,
+      userProfile: null,
+      periTotal: null,
+      action: {
+        sso: null,
+        listen: null,
+      },
+      now: this.$date(new Date(), DEFAULT_TIME),
+      current: {
+        id: null,
+        data: null,
+      },
+      spotify: defaultSpotify,
+      spoti: null,
+      periometer: `medium`,
+    };
+  },
+  methods: {
+    login: function () {
+      goAuthorizationURI();
+    },
+    imagePath: function (peri) {
+      return require("../assets/periometer/periometer-" + peri + ".svg");
+    },
+    // spinPeriometer: function () {
+    //   const peris = ["extra-hot", "hot", "medium", "mild", "extra-mild"];
+    //   let count = 0;
+
+    //   setInterval(() => {
+    //     let index = count % peris.length;
+    //     console.log(peris[index]);
+    //     this.periometer = `${peris[index]}`;
+    //     count++;
+    //   }, 2000);
+    // },
+    logout: function () {
+      logout();
+      this.refreshsso();
+      this.userProfile = null;
+      location.reload();
+    },
+    getToken: function () {
+      return getToken();
+    },
+    refreshsso: async function () {
+      const refresh = await refreshToken();
+      if (refresh.error) {
+        this.action.sso = "PLEASE_LOGIN";
+        this.spotify = defaultSpotify;
+        return;
+      }
+      if (refresh.access_token) {
+        this.action.sso = `LOGGED_IN`;
+        this.refreshApi();
+        this.userProfile = await getCurrentUserProfile();
+      }
+    },
+    refreshUi: function () {
+      this.spotify.image = this.spoti.getImage();
+      this.spotify.songTitle = this.spoti.getSongTitle();
+      this.spotify.albumName = this.spoti.getAlbumName();
+      this.spotify.albumYear = this.spoti.getAlbumYear();
+      this.spotify.artistName = this.spoti.getArtistName();
+      this.spotify.gradient = this.spoti.getGradient();
+      this.spotify.audioFeatures = this.spoti.getAudioFeatures();
+      this.spotify.periTotal = this.spoti.getTotal(this.spotify.audioFeatures);
+      console.log("spotify.audioFeatures: ", this.spotify.audioFeatures);
+    },
+    refreshApi: async function () {
+      const response = await getCurrentListening();
+      if (response.status === 200) {
+        this.current.id = response.data.data.currentlyPlaying.data.item.id;
+        this.current.data = response.data.data;
+        this.action.listen = "LISTENING";
+      }
+      if (response.status === 204) {
+        this.action.listen = "NOT_LISTENING";
+      }
+    },
+  },
+  created: async function () {
+console.log(process.env)
+
+  },
+  computed: {
+    currentTrackId() {
+      return this.current.id;
+    },
+    _() {
+      return _;
+    },
+  },
+  watch: {
+    currentTrackId() {
+      this.spoti = new spotify(this.current);
+      this.refreshUi();
+    },
+  },
+  mounted: function () {
+    this.refreshsso();
+    // this.spinPeriometer();
+
+    window.setInterval(() => {
+      this.refreshsso();
+    }, process.env.VUE_APP_SILENT_REFRESH_SECONDS * 1000);
+
+    if (this.action.sso === "LOGGED_IN") {
+      this.refreshApi();
+    }
+
+    window.setInterval(() => {
+      if (this.action.sso === "LOGGED_IN") {
+        this.refreshApi();
+      }
+    }, 5000);
+
+    window.setInterval(() => {
+      this.now = this.$date(new Date(), DEFAULT_TIME);
+    }, 1000);
+  },
+};
+</script>
+<style scoped>
+.artist-name {
+  font-size: 900%;
+}
+</style>
