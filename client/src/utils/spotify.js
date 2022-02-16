@@ -79,7 +79,6 @@ class Spotify {
             tf: tf
         };
     }
-
     getImage() {
         return _.get(this.data, 'data.currentlyPlaying.data.item.album.images[0].url') ? this.data.data.currentlyPlaying.data.item.album.images[0].url : null
     }
