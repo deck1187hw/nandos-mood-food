@@ -1,12 +1,4 @@
 steps:
-# Necessary for vue.js projects
-  - name: node
-    entrypoint: npm
-    args: ['install', '-g', '@vue/cli']
-  - name: node
-    entrypoint: npm
-    args: ['npm run build-client']
-
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
     id: "Build Docker Image"

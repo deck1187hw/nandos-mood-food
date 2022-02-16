@@ -16,3 +16,10 @@
 `npm install`
 
 `npm run serve`
+
+
+# Deploy 
+
+`npm run build-client`
+
+`push changes to main branch`

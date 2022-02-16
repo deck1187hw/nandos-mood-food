@@ -6,7 +6,6 @@ FROM node:14-slim
 WORKDIR /usr/src/app
 
 ENV NODE_ENV=production
-ENV TEST_VAR=123123
 
 # Copy application dependency manifests to the container image.
 # A wildcard is used to ensure copying both package.json AND package-lock.json (when available).
