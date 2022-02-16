@@ -10,7 +10,6 @@ class Spotify {
 
     constructor(data) {
         this.data = data;
-        console.log(this.data.data.currentlyPlaying)
 
     }
     getTotal(audioFeatures) {

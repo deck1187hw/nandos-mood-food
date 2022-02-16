@@ -2,7 +2,6 @@
   <div class="relative">
     <a
       class="
-        absolute
         inset-0
         z-10
         h-full
@@ -17,8 +16,33 @@
         duration-300
       "
     >
-      <div class="grid grid-cols-1 gap-3 place-items-center pb-10 text-white">
-        <div class="hungry">
+     
+    </a>
+
+
+
+
+
+    <a href="#" class="relative">
+      <div class="flex flex-wrap content-center">
+        <img
+          :src="spotifyImage"
+          :key="spotifyImage"
+          v-if="spotifyImage"
+          class="mx-auto"
+          alt=""
+        />
+      </div>
+    </a>
+
+
+
+
+
+
+ <div class="grid grid-cols-1 gap-3 place-items-center pb-4 text-black pt-8 text-center">
+        <div class="hungry            items-center
+              justify-center">
           <h2 class="text-2xl">Hungry?</h2>
           <p class="lead">Order something for</p>
         </div>
@@ -46,9 +70,9 @@
               hover:bg-white hover:text-black hover:border-black
               dark:bg-white dark:text-black dark:border-black
               subpixel-antialiased
-              border-white
+              border-black
               uppercase
-              text-white
+              text-black
               tracking-wide
             "
           >
@@ -60,7 +84,7 @@
             :href="`https://www.nandos.co.uk/order/search?sauce=${periOmeter}`"
             target="_blank"
             class="
-              flex
+               flex
               items-center
               justify-center
               rounded-none
@@ -76,9 +100,9 @@
               hover:bg-white hover:text-black hover:border-black
               dark:bg-white dark:text-black dark:border-black
               subpixel-antialiased
-              border-white
+              border-black
               uppercase
-              text-white
+              text-black
               tracking-wide
             "
           >
@@ -86,18 +110,9 @@
           >
         </div>
       </div>
-    </a>
-    <a href="#" class="relative">
-      <div class="flex flex-wrap content-center">
-        <img
-          :src="spotifyImage"
-          :key="spotifyImage"
-          v-if="spotifyImage"
-          class="mx-auto"
-          alt=""
-        />
-      </div>
-    </a>
+
+
+
   </div>
 </template>
 

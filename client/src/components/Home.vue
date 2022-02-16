@@ -37,6 +37,9 @@
         <div class="artist-name font-sans font-bold">
           {{ spotify.songTitle }}
         </div>
+        
+
+        
       </div>
       <div
         class="
@@ -61,6 +64,9 @@
                 <span class="font-extrabold">{{ spotify.artistName }}</span
                 ><br />
                 <span class="">{{ spotify.songTitle }}</span>
+<br />
+                <span class="">{{ spotify.albumName }}</span>
+
               </div>
             </div>
 
@@ -403,7 +409,6 @@ export default {
       this.spotify.gradient = this.spoti.getGradient();
       this.spotify.audioFeatures = this.spoti.getAudioFeatures();
       this.spotify.periTotal = this.spoti.getTotal(this.spotify.audioFeatures);
-      console.log("spotify.audioFeatures: ", this.spotify.audioFeatures);
     },
     refreshApi: async function () {
       const response = await getCurrentListening();
@@ -418,8 +423,6 @@ export default {
     },
   },
   created: async function () {
-console.log(process.env)
-
   },
   computed: {
     currentTrackId() {
