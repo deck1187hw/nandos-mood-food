@@ -27,7 +27,7 @@ steps:
         gcloud run deploy $_SERVICE_NAME \
         --image=${_DOCKER_ART_REG}/${_SERVICE_NAME}:$_BUILD_ENV \
         --region=$_LOCATION \
-        --timeout=30m
+        --timeout=30m \
         --allow-unauthenticated
 images:
   - "${_DOCKER_ART_REG}/${_SERVICE_NAME}"
