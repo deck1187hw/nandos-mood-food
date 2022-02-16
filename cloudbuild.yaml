@@ -5,7 +5,7 @@ steps:
     args: ['install', '-g', '@vue/cli']
   - name: node
     entrypoint: npm
-    args: ['run build-client']
+    args: ['npm run build-client']
 
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
