@@ -21,8 +21,8 @@ RUN npm install --only=production
 # Copy local code to the container image.
 COPY . ./
 
-# Run Client Vue Application
-RUN npm run build-client --only=production
+# # Run Client Vue Application
+# RUN npm run build-client --only=production
 
 EXPOSE 8080
 
