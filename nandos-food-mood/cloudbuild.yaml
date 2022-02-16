@@ -1,0 +1,38 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    id: "Build Docker Image"
+    args:
+      [
+        "build",
+        "-t",
+        "${_DOCKER_ART_REG}/${_SERVICE_NAME}:${_BUILD_ENV}",
+        "-t",
+        "${_DOCKER_ART_REG}/${_SERVICE_NAME}:$COMMIT_SHA",
+        "${_SERVICE_PATH}/.",
+      ]
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    id: "Push container image"
+    args:
+      ["push", "${_DOCKER_ARTIFACT_REGISTRY}/${_SERVICE_NAME}:${_BUILD_ENV}"]
+  # Deploy container image as Cloud Run Service
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "Deploy Cloud Run Image"
+    entrypoint: bash
+    args:
+      - "-c"
+      - |
+        echo "Deploying Run Service..."
+        gcloud run deploy $_SERVICE_NAME \
+        --image=${_DOCKER_ART_REG}/${_SERVICE_NAME}:$_BUILD_ENV \
+        --region=$_LOCATION \
+        --timeout=30m
+images:
+  - "${_DOCKER_ART_REG}/${_SERVICE_NAME}"
+substitutions:
+  _LOCATION: "europe-west2"
+  _DOCKER_ART_REG: "europe-west2-docker.pkg.dev/miguelpuig-341508/main-artifacts"
+  _SERVICE_NAME: "nandos-food-mood"
+  _BUILD_ENV: "prod"
+timeout: 1200s
