@@ -6,8 +6,6 @@ const bodyParser = require('body-parser');
 const spotify = require('./services/spotify-service');
 const cors = require('cors')
 
-console.log('ENV',process.env)
-
 const app = express();
 const host = 'http://localhost';
 const port = 8080;
