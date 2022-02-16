@@ -9,7 +9,7 @@ steps:
         "${_DOCKER_ART_REG}/${_SERVICE_NAME}:${_BUILD_ENV}",
         "-t",
         "${_DOCKER_ART_REG}/${_SERVICE_NAME}:$COMMIT_SHA",
-        "${_SERVICE_PATH}/.",
+        "${_SERVICE_PATH}",
       ]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
@@ -35,4 +35,5 @@ substitutions:
   _DOCKER_ART_REG: "europe-west2-docker.pkg.dev/miguelpuig-341508/main-artifacts"
   _SERVICE_NAME: "nandos-food-mood"
   _BUILD_ENV: "prod"
+  _SERVICE_PATH: "."
 timeout: 1200s
