@@ -20,6 +20,8 @@
       background-image: linear-gradient(${spotify.gradient}), url('${spotify.image}');
       `"
     >
+
+
       <div
         class="
           fixed
@@ -37,9 +39,6 @@
         <div class="artist-name font-sans font-bold">
           {{ spotify.songTitle }}
         </div>
-        
-
-        
       </div>
       <div
         class="
@@ -180,9 +179,9 @@
             >
               <div>
                 <img
-                  src="../assets/nandos-logo-bn.png"
+                  src="../assets/barci.svg"
                   style="width: 120px"
-                  class="items-center justify-center opacity-30 mb-5"
+                  class="items-center justify-center grayscale opacity-30 mb-5"
                 />
               </div>
 
@@ -217,8 +216,8 @@
               <div class="grid grid-cols-1 gap-3 place-items-center">
                 <img
                   src="../assets/Spotify-Black-Logo.wine.svg"
-                  style="width: 120px"
-                  class="items-center justify-center opacity-30"
+                  style="width: 160px"
+                  class="items-center justify-center opacity-40"
                 />
               </div>
             </div>
@@ -237,9 +236,9 @@
                   />
 
                   <img
-                    src="../assets/nandos-logo-bn.png"
+                    src="../assets/barci.svg"
                     style="width: 120px"
-                    class="items-center justify-center opacity-30 mb-3"
+                    class="items-center grayscale justify-center opacity-30 mb-3"
                   />
                 </div>
 
@@ -294,7 +293,33 @@
           </div>
         </div>
       </div>
+
+<div
+    class="
+          pt-5
+          bottom-5
+          right-5
+          pr-3
+          pl-3
+          pb-5
+          max-w-md
+          rounded-none
+          sm:px-10
+          mx-auto
+          text-white
+          z-20
+          xl:fixed
+          font-mono
+          sm:max-w-lg
+    "
+  >
+    <div class="copy">
+      Built with love by <a href="https://miguelpuig.com/" target="_blank"> deck1187hw</a>
     </div>
+    
+  </div>
+    </div>
+    
   </div>
 </template>
 
