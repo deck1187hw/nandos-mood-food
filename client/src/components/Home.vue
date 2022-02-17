@@ -45,6 +45,8 @@
         class="
           pt-5
           top-5
+          pr-3
+          pl-3
           pb-5
           max-w-md
           rounded-none
@@ -107,15 +109,13 @@
             grid grid-flow-row-dense grid-cols-4 grid-rows-1
             mt-5
             bg-black bg-opacity-60
-            pb-4
-            pt-3
           "
           v-if="userProfile"
         >
           <div class="">
             <div class="md:shrink-0">
               <img
-                class="mask pl-2"
+                class="pl-0"
                 :src="userProfile.images[0].url"
                 :alt="userProfile.display_name"
               />
@@ -123,7 +123,7 @@
           </div>
 
           <div class="col-span-3">
-            <div class="pt-3 pl-5">
+            <div class="pt-2 pl-5">
               <div
                 class="
                   uppercase
