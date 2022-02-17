@@ -39,9 +39,9 @@
           <p class="lead">Order something for</p>
         </div>
       </div>
-
-      <div class="grid grid-cols-2 gap-3 place-items-center">
-        <div class="pl-5">
+<div class="flex flex-wrap  place-items-center">
+  <div class="w-full sm:w-1/2 mb-4">
+  
           <a
             :href="`https://order.nandos.co.uk/store/store-selection?sauce=${periOmeter}`"
             target="_blank"
@@ -51,7 +51,7 @@
               justify-center
               rounded-none
               w-full
-              px-14
+              px-10
               py-2
               text-base
               bg-transparent
@@ -70,18 +70,25 @@
           >
             <span class="text-xl">Delivery</span></a
           >
-        </div>
-        <div>
+     
+  
+  </div>
+  <div class="w-full sm:w-1/2 mb-4">
+  
+  
+  
+
           <a
             :href="`https://www.nandos.co.uk/order/search?sauce=${periOmeter}`"
             target="_blank"
             class="
-               flex
+         
+             flex
               items-center
               justify-center
               rounded-none
               w-full
-              px-14
+              px-10
               py-2
               text-base
               bg-transparent
@@ -100,8 +107,10 @@
           >
             <span class="text-xl">Collect</span></a
           >
-        </div>
-      </div>
+
+  
+  </div>
+</div>
 
 
 

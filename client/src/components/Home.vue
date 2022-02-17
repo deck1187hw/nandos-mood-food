@@ -22,6 +22,7 @@
     >
 
 
+
       <div
         class="
           fixed
@@ -60,9 +61,9 @@
       >
         <div v-if="action.sso === 'LOGGED_IN'">
         
-          <div class="audioStats divide-y-2 grid grid-cols-1 text-right">
-            <div class="stats-artist mb-6 mt-3 border-r-2 border-white pr-3">
-              <div class="top-date divide-x" v-if="spotify.artistName">
+          <div class="audioStats bg-black bg-opacity-20 grid grid-cols-1 text-right pr-2 pb-2">
+            <div class="stats-artist  mb-6 mt-3  pr-3">
+              <div class="top-date" v-if="spotify.artistName">
                 <span class="font-extrabold">{{ spotify.artistName }}</span
                 ><br />
                 <span class="">{{ spotify.songTitle }}</span>
@@ -88,14 +89,14 @@
               key-positive="energy"
             />
 
-            <div class="peri-total">
+            <div class="peri-total pb-3">
               <div
-                class="`positiveness positiveness-total pt-3 pb-1`"
+                class="`positiveness positiveness-total pt-3 pb-4`"
                 v-if="spotify.audioFeatures"
               >
-                Peri Total:
+                Total:
                 <span
-                  class="font-bold p-1 pl-3 pr-3 text-xl text-white"
+                  class="p-1 pl-3 pr-3  text-white mr-5"
                   :style="`background-color:${spotify.periTotal.peri.color}`"
                   >{{ spotify.periTotal.percentage }}% -
                   {{ spotify.periTotal.peri.title }}</span
@@ -107,8 +108,7 @@
         <div
           class="
             grid grid-flow-row-dense grid-cols-4 grid-rows-1
-            mt-5
-            bg-black bg-opacity-60
+            bg-black bg-opacity-30
           "
           v-if="userProfile"
         >
@@ -182,26 +182,7 @@
               class="grid grid-cols-1 gap-3 place-items-center"
             >
 
-              <div class="grid grid-cols-2 gap-3 place-items-center opacity-50">
-               <div>
-               <a href="https://www.nandos.co.uk/" target="_blank" title="Nando's">
-                <img
-                  src="../assets/barci.svg"
-                  style="width: 120px"
-                  class="items-center justify-center mb-5 nandos-logo"
-                />
-                </a>
-              </div>
-              <div>
-              <a :href="userProfile.external_urls.spotify" target="_blank" title="Spotify profile">
-                <img
-                  src="../assets/Spotify-Black-Logo.wine.svg"
-                  style="width: 140px"
-                  class="items-center justify-center  pb-2"
-                />
-                </a>
-                </div>
-              </div>
+             
 
              
 
@@ -232,6 +213,32 @@
               >
                 Share on Facebook
               </ShareNetwork>
+
+
+
+
+<div class="">
+ <div class="grid grid-cols-2 gap-3 place-items-center opacity-50">
+               <div>
+               <a href="https://www.nandos.co.uk/" target="_blank" title="Nando's">
+                <img
+                  src="../assets/barci.svg"
+                  style="width: 120px"
+                  class="items-center justify-center mb-5 nandos-logo"
+                />
+                </a>
+              </div>
+              <div>
+              <a :href="userProfile.external_urls.spotify" target="_blank" title="Spotify profile">
+                <img
+                  src="../assets/Spotify-Black-Logo.wine.svg"
+                  style="width: 140px"
+                  class="items-center justify-center  pb-2"
+                />
+                </a>
+                </div>
+              </div>
+</div>
 
 
             </div>
