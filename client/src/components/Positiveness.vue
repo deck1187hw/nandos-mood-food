@@ -3,10 +3,10 @@
     :class="`positiveness positiveness-${keyPositive} pt-1 pb-1`"
     v-if="audioFeatures"
   >
-    {{ mainText }}:
-    <span class="font-bold badge badge-outline text-white"
+     {{ mainText }}:
+    <span :class="`badge badge-${getPositiveness(keyPositive, audioFeatures).peri.title} text-white`" :style="`background-color:${getPositiveness(keyPositive, audioFeatures).peri.color}; border:none`"
       >{{ Math.ceil(audioFeatures[keyPositive] * 100) }}% - {{
-        getPositiveness(keyPositive, audioFeatures).peri
+        getPositiveness(keyPositive, audioFeatures).peri.title
       }}</span
     >
     <Question :main-text="getExplanation()" />
@@ -15,6 +15,7 @@
 
 <script>
 import Question from "./Question";
+import {getPeriAttrs} from "../utils/main";
 export default {
   components: {
     Question,
@@ -22,10 +23,14 @@ export default {
   props: ["mainText", "audioFeatures", "keyPositive"],
   data: function () {
     return {
-      explanation: "asd",
+      explanation: "",
+      positiveness: {peri: null, percentage: null, tf: null},
     };
   },
   name: "Positiveness",
+  created: async function () {
+    this.positiveness = {}
+  },
   methods: {
     getExplanation() {
       switch (this.keyPositive) {
@@ -40,24 +45,8 @@ export default {
       }
     },
     getPositiveness(typeFeature, audioFeatures) {
-      let peri = "medium";
       let tf = audioFeatures[typeFeature];
-
-      if (tf >= 0 && tf < 0.2) {
-        peri = "extra-mild";
-      }
-      if (tf >= 0.2 && tf < 0.4) {
-        peri = "mild";
-      }
-      if (tf >= 0.4 && tf < 0.6) {
-        peri = "medium";
-      }
-      if (tf >= 0.6 && tf < 0.8) {
-        peri = "hot";
-      }
-      if (tf >= 0.8 && tf < 1) {
-        peri = "extra-hot";
-      }
+      const peri = getPeriAttrs(tf);
       return {
         peri: peri,
         percentage: Math.ceil(tf * 100),
@@ -67,3 +56,9 @@ export default {
   },
 };
 </script>
+<style>
+.badge-mild{
+  background-color: rgb(151, 195, 30);
+  border: none;
+}
+</style>

@@ -12,10 +12,11 @@ class Spotify {
         this.data = data;
 
     }
-    getTotal(audioFeatures) {
-        const total = audioFeatures.valence + audioFeatures.danceability + audioFeatures.energy;
-        const tf = total / 3; // average
-        let peri = "medium";
+    getPeriAttrs(tf){
+        let peri = {
+                title: "",
+                color: ""
+            }
         if (tf >= 0 && tf < 0.2) {
             peri = {
                 title: "extra-mild",
@@ -46,38 +47,7 @@ class Spotify {
                 color: "#46230f"
             }
         }
-        return {
-            peri: peri,
-            percentage: Math.ceil(tf * 100),
-            tf: tf
-        };
-    }
-    getPositiveness(typeFeature, audioFeatures) {
-        let peri = "medium";
-        let tf = audioFeatures[typeFeature];
-
-        if (tf >= 0 && tf < 0.2) {
-            peri = "extra-mild"
-        }
-        if (tf >= 0.2 && tf < 0.4) {
-            peri = "mild"
-        }
-        if (tf >= 0.4 && tf < 0.6) {
-            peri = "medium"
-        }
-        if (tf >= 0.6 && tf < 0.8) {
-            peri = "hot"
-        }
-        if (tf >= 0.8 && tf < 1) {
-            peri = "extra-hot"
-        }
-
-
-        return {
-            peri: peri,
-            percentage: Math.ceil(tf * 100),
-            tf: tf
-        };
+        return peri
     }
     getImage() {
         return _.get(this.data, 'data.currentlyPlaying.data.item.album.images[0].url') ? this.data.data.currentlyPlaying.data.item.album.images[0].url : null

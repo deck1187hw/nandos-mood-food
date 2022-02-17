@@ -341,6 +341,7 @@
 import _ from "lodash";
 const spotify = require("../utils/spotify");
 import goAuthorizationURI from "../utils/pkce-spotify";
+import { getTotal } from "../utils/main";
 import { getCurrentUserProfile } from "../services/user-service";
 import { getCurrentListening } from "../services/nandos-service";
 import { getToken, refreshToken, logout } from "../utils/pkce-spotify";
@@ -447,7 +448,7 @@ export default {
       this.spotify.artistName = this.spoti.getArtistName();
       this.spotify.gradient = this.spoti.getGradient();
       this.spotify.audioFeatures = this.spoti.getAudioFeatures();
-      this.spotify.periTotal = this.spoti.getTotal(this.spotify.audioFeatures);
+      this.spotify.periTotal = getTotal(this.spotify.audioFeatures);
     },
     refreshApi: async function () {
       const response = await getCurrentListening();
