@@ -1,4 +1,9 @@
-# Nando's Periometer Mood
+# Spotify - Nando's - Peri Mood
+
+Find out the mood of your currently played Spotify song based on its valance, danceability, and energy.
+
+![demo](assets/demo.gif)
+
 
 
 # Local development
