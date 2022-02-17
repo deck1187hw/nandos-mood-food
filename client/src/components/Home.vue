@@ -59,6 +59,7 @@
         "
       >
         <div v-if="action.sso === 'LOGGED_IN'">
+        
           <div class="audioStats divide-y-2 grid grid-cols-1 text-right">
             <div class="stats-artist mb-6 mt-3 border-r-2 border-white pr-3">
               <div class="top-date divide-x" v-if="spotify.artistName">
@@ -140,6 +141,7 @@
                   :href="userProfile.external_urls.spotify"
                   target="_blank"
                   class="mr-3 text-xs underline"
+                  title="Spotify Profile"
                   v-on:click="logout"
                   >Profile</a
                 >
@@ -147,6 +149,7 @@
                 <a
                   href="javascript:void(0)"
                   class="mr-2 text-xs underline"
+                  title="Logout"
                   v-on:click="logout"
                   >Logout</a
                 >
@@ -163,7 +166,7 @@
         class="
           relative
           px-6
-          pt-10
+          pt-5
           pb-8
           bg-white bg-opacity-80
           shadow-xl
@@ -171,19 +174,36 @@
           rounded-none
         "
       >
+
         <div class="max-w-md mx-auto">
           <div class="divide-y">
             <div
               v-if="action.listen === 'LISTENING' && action.sso === 'LOGGED_IN'"
               class="grid grid-cols-1 gap-3 place-items-center"
             >
-              <div>
+
+              <div class="grid grid-cols-2 gap-3 place-items-center opacity-50">
+               <div>
+               <a href="https://www.nandos.co.uk/" target="_blank" title="Nando's">
                 <img
                   src="../assets/barci.svg"
                   style="width: 120px"
-                  class="items-center justify-center grayscale opacity-30 mb-5"
+                  class="items-center justify-center mb-5 nandos-logo"
                 />
+                </a>
               </div>
+              <div>
+              <a :href="userProfile.external_urls.spotify" target="_blank" title="Spotify profile">
+                <img
+                  src="../assets/Spotify-Black-Logo.wine.svg"
+                  style="width: 140px"
+                  class="items-center justify-center  pb-2"
+                />
+                </a>
+                </div>
+              </div>
+
+             
 
               <Transition name="fade" mode="out-in">
                 <div>
@@ -213,13 +233,7 @@
                 Share on Facebook
               </ShareNetwork>
 
-              <div class="grid grid-cols-1 gap-3 place-items-center">
-                <img
-                  src="../assets/Spotify-Black-Logo.wine.svg"
-                  style="width: 160px"
-                  class="items-center justify-center opacity-40"
-                />
-              </div>
+
             </div>
 
             <div v-if="action.listen === 'NOT_LISTENING'" class="text-black">
@@ -238,7 +252,7 @@
                   <img
                     src="../assets/barci.svg"
                     style="width: 120px"
-                    class="items-center grayscale justify-center opacity-30 mb-3"
+                    class="items-center grayscale justify-center opacity-30 mb-3 nandos-logo"
                   />
                 </div>
 
@@ -490,5 +504,16 @@ export default {
 <style scoped>
 .artist-name {
   font-size: 900%;
+}
+.nandos-logo {
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

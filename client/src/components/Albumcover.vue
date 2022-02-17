@@ -19,11 +19,7 @@
      
     </a>
 
-
-
-
-
-    <a href="#" class="relative">
+    <div class="relative">
       <div class="flex flex-wrap content-center">
         <img
           :src="spotifyImage"
@@ -33,11 +29,7 @@
           alt=""
         />
       </div>
-    </a>
-
-
-
-
+    </div>
 
 
  <div class="grid grid-cols-1 gap-3 place-items-center pb-4 text-black pt-8 text-center">
