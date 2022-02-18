@@ -43,7 +43,7 @@
     >
       <div class="hungry items-center justify-center">
         <h2 class="text-2xl">Hungry?</h2>
-        <p class="lead">Order {{periOmeter}}</p>
+        <p class="lead">Order {{ periOmeter }}</p>
       </div>
     </div>
     <div class="flex flex-wrap place-items-center">

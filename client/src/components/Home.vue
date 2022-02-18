@@ -25,11 +25,11 @@
           fixed
           right-5
           bottom-5
-          opacity-10
+          opacity-20
           text-right text-white
           tracking-tighter
         "
-        v-if="spotify.artistName && action === `OK`"
+        v-if="spotify.artistName && action.main === `OK`"
       >
         <div class="artist-name font-sans text-9xl font-black">
           {{ spotify.artistName }}
@@ -69,7 +69,9 @@
           >
             <div class="stats-artist mb-3 mt-3 pr-5 pl-5 xl:pr-1">
               <div class="top-date" v-if="spotify.artistName">
-                <span class="font-extrabold text-xl">{{ spotify.artistName }}</span
+                <span class="font-extrabold text-xl">{{
+                  spotify.artistName
+                }}</span
                 ><br />
                 <span class="text-sm">{{ spotify.songTitle }}</span>
                 <br />
@@ -120,7 +122,7 @@
             <div class="md:shrink-0">
               <img
                 class="pl-0"
-                style="width:90px"
+                style="width: 90px"
                 :src="current.data.user.data.images[0].url"
                 :alt="current.data.user.data.display_name"
               />
@@ -139,13 +141,15 @@
                 "
               >
                 {{ current.data.user.data.display_name }}
-                <small> <a
-                  href="javascript:void(0)"
-                  class="mr-2 text-xs underline"
-                  title="Logout"
-                  v-on:click="logout"
-                  >Logout</a
-                ></small>
+                <small>
+                  <a
+                    href="javascript:void(0)"
+                    class="mr-2 text-xs underline"
+                    title="Logout"
+                    v-on:click="logout"
+                    >Logout</a
+                  ></small
+                >
               </div>
 
               <div class="text-center top-date font-light text-xs mt-2 italic">
@@ -211,18 +215,40 @@
                   :peri-ometer="spotify.periTotal.peri.title"
                 />
               </Transition>
-              <ShareNetwork
-                v-if="current.data.user"
-                class="text-black"
-                network="facebook"
-                :url="`${spotify.trackUrl}`"
-                :title="`Listening to ${spotify.artistName}`"
-                description="This song is great!"
-                :quote="`Listening to ${spotify.periTotal.peri.title}'s ${spotify.artistName}`"
-                :hashtags="`${spotify.artistName.replace(/\s/g, '')}, nando's`"
-              >
-                Share on Facebook
-              </ShareNetwork>
+
+              <button class="rounded-none bg-black pl-5 pr-5">
+                <ShareNetwork
+                  v-if="current.data.user"
+                  class="text-white"
+                  network="facebook"
+                  :url="`${spotify.trackUrl}`"
+                  :title="`Listening to ${spotify.artistName}`"
+                  description="This song is great!"
+                  :quote="`Listening to ${spotify.periTotal.peri.title}'s ${spotify.artistName}`"
+                  :hashtags="`${spotify.artistName.replace(
+                    /\s/g,
+                    ''
+                  )}, nando's`"
+                >
+                  Share on Facebook
+                </ShareNetwork>
+              </button>
+              <button class="rounded-none bg-black pl-5 pr-5">
+                <ShareNetwork
+                  v-if="current.data.user"
+                  network="twitter"
+                  class="text-white"
+                  :url="`${spotify.trackUrl}`"
+                  :title="`Listening to ${spotify.periTotal.peri.title}'s ${spotify.artistName} - ${spotify.songTitle}`"
+                  description="This song is great!"
+                  :quote="`Listening to ${spotify.periTotal.peri.title}'s ${spotify.artistName}`"
+                  :hashtags="`${spotify.artistName.replace(/\s/g, '')},nandos,${
+                    spotify.periTotal.peri.title
+                  }`"
+                >
+                  Share on Twitter
+                </ShareNetwork>
+              </button>
 
               <div class="" v-if="current.data.user">
                 <div
@@ -263,71 +289,7 @@
             </div>
             <transition name="fade" mode="out-in">
               <div v-if="action.main === 'NOT_LOGGED_IN'">
-                <div class="grid grid-cols-2 gap-3 place-items-center mb-7">
-                  <img
-                    src="../assets/Spotify-Black-Logo.wine.svg"
-                    style="width: 140px"
-                    class="items-center justify-center opacity-30"
-                  />
-
-                  <img
-                    src="../assets/barci.svg"
-                    style="width: 120px"
-                    class="
-                      items-center
-                      grayscale
-                      justify-center
-                      opacity-30
-                      mb-3
-                      nandos-logo
-                    "
-                  />
-                </div>
-
-                <a
-                  v-on:click="login"
-                  href="javascript:void(0)"
-                  class="
-                    flex
-                    items-center
-                    justify-center
-                    rounded-none
-                    w-full
-                    px-14
-                    py-2
-                    mt-2
-                    space-x-3
-                    text-2xl text-center
-                    bg-transparent
-                    transition-colors
-                    duration-200
-                    transform
-                    border
-                    font-sans
-                    dark:text-white
-                    dark:border-white
-                    dark:hover:bg-white
-                    dark:hover:text-black
-                    hover:bg-black hover:text-white
-                    subpixel-antialiased
-                    font-bold
-                    border-black
-                    uppercase
-                    text-black
-                    tracking-wide
-                    animate-bounce
-                  "
-                >
-                  <span class="text-xl">What are you listening?</span></a
-                >
-                <p class="text-center text-sm mt-7 opacity-60 text-black">
-                  Click above to give permission
-                  <br />
-                  <small
-                    >We won't share any information with anyone or store it
-                    anywhere</small
-                  >
-                </p>
+                <Notloggedin />
               </div>
             </transition>
 
@@ -376,6 +338,7 @@ const DEFAULT_TIME = "dd MMMM yyyy HH:mm:ss";
 
 import Positiveness from "./Positiveness";
 import Nolistening from "./Nolistening";
+import Notloggedin from "./Notloggedin";
 import Albumcover from "./Albumcover";
 
 const defaultSpotify = {
@@ -394,27 +357,11 @@ const defaultCurrent = {
 };
 export default {
   name: "Home",
-  metaInfo: {
-    title: "Nando's Peri Mood",
-    htmlAttrs: {
-      lang: "en",
-      amp: false,
-    },
-    meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      {
-        name: "description",
-        content:
-          "Find out the mood of a song based on its valance, danceability and energy",
-      },
-    ],
-  },
   components: {
-    // Playback,
     Positiveness,
     Nolistening,
     Albumcover,
+    Notloggedin
   },
   data: function () {
     return {
@@ -498,7 +445,7 @@ export default {
       if (this.action.main === "OK" || this.action.main === "NOT_LISTENING") {
         this.refreshApi();
       }
-    }, 5000);
+    }, 8000);
 
     window.setInterval(() => {
       this.now = this.$date(new Date(), DEFAULT_TIME);
