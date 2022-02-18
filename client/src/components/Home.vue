@@ -120,6 +120,7 @@
             <div class="md:shrink-0">
               <img
                 class="pl-0"
+                style="width:90px"
                 :src="current.data.user.data.images[0].url"
                 :alt="current.data.user.data.display_name"
               />
@@ -133,7 +134,7 @@
                   uppercase
                   tracking-wide
                   text-sm text-white
-                  font-semibold
+                  font-normal
                   text-center
                 "
               >
