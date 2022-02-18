@@ -67,13 +67,13 @@
               pb-2
             "
           >
-            <div class="stats-artist mb-3 mt-3 pr-5 xl:pr-1">
+            <div class="stats-artist mb-3 mt-3 pr-5 pl-5 xl:pr-1">
               <div class="top-date" v-if="spotify.artistName">
-                <span class="font-extrabold">{{ spotify.artistName }}</span
+                <span class="font-extrabold text-xl">{{ spotify.artistName }}</span
                 ><br />
-                <span class="">{{ spotify.songTitle }}</span>
+                <span class="text-sm">{{ spotify.songTitle }}</span>
                 <br />
-                <span class="">{{ spotify.albumName }}</span>
+                <span class="text-sm">{{ spotify.albumName }}</span>
               </div>
             </div>
 
@@ -188,7 +188,7 @@
                 <div class="w-8 h-8 bg-black rounded-full"></div>
                 <div class="w-8 h-8 bg-black rounded-full"></div>
               </div>
-              <h2 class="text-2xl">Loading...</h2>
+              <h2 class="text-2xl text-black">Loading...</h2>
             </div>
 
             <div
@@ -211,14 +211,13 @@
                   :peri-ometer="spotify.periTotal.peri.title"
                 />
               </Transition>
-
               <ShareNetwork
                 v-if="current.data.user"
                 class="text-black"
                 network="facebook"
-                :url="`${current.data.user.data.external_urls.spotify}`"
+                :url="`${spotify.trackUrl}`"
                 :title="`Listening to ${spotify.artistName}`"
-                description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
+                description="This song is great!"
                 :quote="`Listening to ${spotify.periTotal.peri.title}'s ${spotify.artistName}`"
                 :hashtags="`${spotify.artistName.replace(/\s/g, '')}, nando's`"
               >
@@ -386,6 +385,7 @@ const defaultSpotify = {
   albumYear: null,
   artistName: null,
   audioFeatures: null,
+  getTrackExternalUrl: null,
   gradient: `rgba(42, 51, 61, 1), rgba(66, 78, 92, 1)`,
 };
 const defaultCurrent = {
@@ -451,6 +451,7 @@ export default {
       this.spotify.albumName = this.spoti.getAlbumName();
       this.spotify.albumYear = this.spoti.getAlbumYear();
       this.spotify.artistName = this.spoti.getArtistName();
+      this.spotify.trackUrl = this.spoti.getTrackExternalUrl();
       this.spotify.gradient = this.spoti.getGradient();
       this.spotify.audioFeatures = this.spoti.getAudioFeatures();
       this.spotify.periTotal = getTotal(this.spotify.audioFeatures);
@@ -494,7 +495,7 @@ export default {
 
     window.setInterval(() => {
       // If the user is logged in, refresh every 5 secs
-      if (this.action.main === "OK") {
+      if (this.action.main === "OK" || this.action.main === "NOT_LISTENING") {
         this.refreshApi();
       }
     }, 5000);
