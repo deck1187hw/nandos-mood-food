@@ -8,12 +8,10 @@
         bg-gradient-to-r
         from-blue-500
         to-pink-500
-        py-6
         flex flex-col
         justify-center
         relative
         overflow-hidden
-        sm:py-12
         bg-top-left bg-origin-border bg-clip-border bg-fixed bg-center bg-cover
       "
       :style="`
