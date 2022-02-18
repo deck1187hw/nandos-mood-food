@@ -3,13 +3,13 @@
     :class="`positiveness positiveness-${keyPositive} pt-1 pb-1`"
     v-if="audioFeatures"
   >
-     {{ mainText }}:
+     {{ mainText }}: {{ Math.ceil(audioFeatures[keyPositive] * 100) }}% - 
     <span :class="`pl-1 pr-1 w-44	badge-${getPositiveness(keyPositive, audioFeatures).peri.title} text-white`" :style="`background-color:${getPositiveness(keyPositive, audioFeatures).peri.color}; border:none`"
-      >{{ Math.ceil(audioFeatures[keyPositive] * 100) }}% - {{
+      >{{
         getPositiveness(keyPositive, audioFeatures).peri.title
       }}</span
     >
-    <Question :main-text="getExplanation()" />
+    <Question :main-text="getExplanation()" class="invisible xl:visible" />
   </div>
 </template>
 

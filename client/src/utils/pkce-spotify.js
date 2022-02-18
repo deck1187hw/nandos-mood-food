@@ -1,9 +1,6 @@
-// create the code verifier and challenge
 import pkceChallenge from 'pkce-challenge'
 import { v4 as uuid } from 'uuid'
 import axios from 'axios'
-
-// construct the authorization URI
 
 const STATE_KEY = 'spotify_auth_state'
 const CODE_VERIFIER_KEY = 'spotify_code_verifier'
@@ -28,6 +25,7 @@ function createAuthorizationURI() {
         response_type: 'code',
         redirect_uri: REDIRECT_URI,
         code_challenge_method: CODE_CHALLENGE_METHOD,
+        show_dialog: false,
         code_challenge,
         scope: SCOPE,
         state: state
@@ -35,7 +33,6 @@ function createAuthorizationURI() {
 }
 
 
-// go to authorization URI
 function goAuthorizationURI() {
     window.location.href = createAuthorizationURI()
 }

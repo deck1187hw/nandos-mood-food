@@ -35,13 +35,13 @@
 </template>
 
 <script>
-import { nextTrack } from "../services/user-service";
+
 
 export default {
   name: "Playback",
   methods: {
     next: function () {
-      nextTrack();
+
     },
   }
 };

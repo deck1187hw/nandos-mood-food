@@ -28,32 +28,10 @@ router.get('/', async function (req, res) {
         return res.status(401).json({ error: "Spotify Authorization not present" });
     }
     let = spotifyResponse = {}
-
-    try {
-
-        const spoti = new spotify(req.headers.authorization);
-
-        spotifyResponse.currentlyPlaying = await spoti.currentlyPlaying();
-
-        if (!_.get(spotifyResponse.currentlyPlaying, 'data.item.id')) {
-            return res.status(204).json({ error: "No song identified" });
-        }
-
-
-        spotifyResponse.audioFeatures = await spoti.audioFeatures(spotifyResponse.currentlyPlaying.data.item.id);
-
-        res.json({ data: spotifyResponse });
-
-    } catch (error) {
-        console.log(error)
-        return res.status(error.status).json({ error: error.message });
-    }
-
+    return res.status(200).json({});
 });
 
 app.use('/api', router);
-
-// app.use(express.static('public'));
 
 // 1st call for unredirected requests 
 app.use(staticFileMiddleware);
