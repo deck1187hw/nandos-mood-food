@@ -138,26 +138,15 @@
                 "
               >
                 {{ current.data.user.data.display_name }}
-              </div>
-
-              <div class="mt-2 text-white uppercase text-center">
-                <a
-                  :href="current.data.user.data.external_urls.spotify"
-                  target="_blank"
-                  class="mr-3 text-xs underline"
-                  title="Spotify Profile"
-                  v-on:click="logout"
-                  >Profile</a
-                >
-
-                <a
+                <small> <a
                   href="javascript:void(0)"
                   class="mr-2 text-xs underline"
                   title="Logout"
                   v-on:click="logout"
                   >Logout</a
-                >
+                ></small>
               </div>
+
               <div class="text-center top-date font-light text-xs mt-2 italic">
                 {{ now }}
               </div>
