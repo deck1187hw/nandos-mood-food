@@ -316,7 +316,11 @@
         "
       >
         <div class="copy">
-          Built with love by
+          Built with <img
+                        src="../assets/chillie.svg"
+                        style="width: 120px"
+                        class="items-center justify-center mb-5 nandos-logo"
+                      /> by
           <a href="https://miguelpuig.com/" target="_blank"> deck1187hw</a>
         </div>
       </div>

@@ -27,7 +27,7 @@ steps:
         --image=${_DOCKER_ART_REG}/${_SERVICE_NAME}:$_BUILD_ENV \
         --region=$_LOCATION \
         --timeout=30m \
-        --set-env-vars SECRET_KEY="$_SECRET_KEY", NANDOS_SERVICE_TOKEN="$_NANDOS_SERVICE_TOKEN" \
+        --set-env-vars SECRET_KEY="$_SECRET_KEY",NANDOS_SERVICE_TOKEN="$_NANDOS_SERVICE_TOKEN" \
         --allow-unauthenticated
 images:
   - "${_DOCKER_ART_REG}/${_SERVICE_NAME}"
