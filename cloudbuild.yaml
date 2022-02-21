@@ -27,13 +27,14 @@ steps:
         --image=${_DOCKER_ART_REG}/${_SERVICE_NAME}:$_BUILD_ENV \
         --region=$_LOCATION \
         --timeout=30m \
-        --set-env-vars SECRET_KEY=$_SECRET_KEY \
+        --set-env-vars SECRET_KEY=$_SECRET_KEY, NANDOS_SERVICE_TOKEN=$_NANDOS_SERVICE_TOKEN \
         --allow-unauthenticated
 images:
   - "${_DOCKER_ART_REG}/${_SERVICE_NAME}"
 substitutions:
   _LOCATION: "europe-west4"
   _SECRET_KEY: "$_SECRET_KEY"
+  _NANDOS_SERVICE_TOKEN: "$_NANDOS_SERVICE_TOKEN"
   _DOCKER_ART_REG: "europe-west2-docker.pkg.dev/miguelpuig-341508/main-artifacts"
   _SERVICE_NAME: "nandos-food-mood"
   _BUILD_ENV: "prod"
