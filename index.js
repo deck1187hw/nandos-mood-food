@@ -79,7 +79,8 @@ router.get('/fetch-menu', async function (req, res) {
             })
         }
     } catch (error) {
-        return res.status(500).json({ status: "error updating menu and bastes" });
+        console.error(JSON.stringify(error))
+        return res.status(500).json({ status: `Error updating menu and bastes, ERROR, ${JSON.stringify(error)}` });
     }
 
 
