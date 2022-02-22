@@ -164,14 +164,14 @@
           px-6
           pt-5
           pb-8
-          bg-white bg-opacity-80
+          bg-white bg-opacity-70
           shadow-xl
-          sm:max-w-lg sm:mx-auto sm:px-10
+          sm:max-w-xl sm:mx-auto sm:px-8
           rounded-none
         "
       >
         <div class="max-w-md mx-auto">
-          <div class="divide-y">
+          <div>
             <div
               class="text-center pt-5 pb-5 animate-pulse"
               v-if="action.main === 'LOADING'"
@@ -207,12 +207,27 @@
                   />
                 </div>
               </Transition>
-              <Transition name="fade" mode="out-in">
-                <Albumcover
-                  :spotify-image="spotify.image"
-                  :peri-ometer="spotify.periTotal.peri.title"
-                />
-              </Transition>
+
+              <div class="grid grid-cols-2 gap-3 place-items-top">
+                <div>
+                  <Transition name="fade" mode="out-in">
+                    <Albumcover
+                      :spotify="spotify"
+                      :peri-ometer="spotify.periTotal.peri.title"
+                    />
+                  </Transition>
+                </div>
+                <div v-if="_.get(listeners, '[0].foodData[0]')">
+                  <Transition name="fade" mode="out-in">
+                    <Menucover :listeners="listeners" />
+                  </Transition>
+                </div>
+              </div>
+
+              <Hungry
+                :peri-ometer="spotify.periTotal.peri.title"
+                class="mt-10"
+              />
 
               <button class="rounded-none bg-black pl-5 pr-5">
                 <ShareNetwork
@@ -316,15 +331,14 @@
         "
       >
         <div class="copy">
-          Built with <img
-                        src="../assets/chillie.svg"
-                        style="width: 120px"
-                        class="items-center justify-center mb-5 nandos-logo"
-                      /> by
+          Built with
+          <img src="../assets/chillie.svg" style="width: 36px" class="inline" />
+          by
           <a href="https://miguelpuig.com/" target="_blank"> deck1187hw</a>
         </div>
       </div>
     </div>
+    <pre>{{ listeners }}</pre>
   </div>
 </template>
 
@@ -333,7 +347,10 @@ import _ from "lodash";
 const spotify = require("../utils/spotify");
 import goAuthorizationURI from "../utils/pkce-spotify";
 import { getTotal } from "../utils/main";
-import { getCurrentListeningSpoti } from "../services/nandos-service";
+import {
+  getCurrentListeningSpoti,
+  addListener,
+} from "../services/nandos-service";
 import { getToken, logout } from "../utils/pkce-spotify";
 // import Playback from "./Playback";
 const DEFAULT_TIME = "dd MMMM yyyy HH:mm:ss";
@@ -342,6 +359,8 @@ import Positiveness from "./Positiveness";
 import Nolistening from "./Nolistening";
 import Notloggedin from "./Notloggedin";
 import Albumcover from "./Albumcover";
+import Menucover from "./Menucover";
+import Hungry from "./Hungry";
 
 const defaultSpotify = {
   image: null,
@@ -363,10 +382,13 @@ export default {
     Positiveness,
     Nolistening,
     Albumcover,
-    Notloggedin
+    Menucover,
+    Notloggedin,
+    Hungry,
   },
   data: function () {
     return {
+      listeners: [],
       envs: process.env,
       periTotal: null,
       action: {
@@ -393,6 +415,13 @@ export default {
     },
     getToken: function () {
       return getToken();
+    },
+    getListeners: async function () {
+      const listeners = await addListener(this.currentTrackId);
+      this.listeners = _.get(listeners, "data.listeners")
+        ? listeners.data.listeners
+        : [];
+      console.log("LISTENERS", this.listeners);
     },
     refreshUi: function () {
       this.spotify.image = this.spoti.getImage();
@@ -433,9 +462,10 @@ export default {
     },
   },
   watch: {
-    currentTrackId() {
+    async currentTrackId() {
       this.spoti = new spotify(this.current);
       this.refreshUi();
+      this.getListeners();
     },
   },
   mounted: function () {

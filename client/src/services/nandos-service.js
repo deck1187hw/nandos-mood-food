@@ -4,6 +4,31 @@ import _ from 'lodash';
 
 const API_URL = `https://api.spotify.com/v1`
 
+
+export async function getListeners(trackId) {
+    const response = await axios.get(`${process.env.VUE_APP_NANDOS_API_SERVICE_URL}/api/song/${trackId}/listeners`, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`
+        }
+    })
+    return {
+        status: response.status,
+        data: response.data
+    }
+}
+
+export async function addListener(trackId) {
+    const response = await axios.post(`${process.env.VUE_APP_NANDOS_API_SERVICE_URL}/api/song/${trackId}`, {}, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`
+        }
+    })
+    return {
+        status: response.status,
+        data: response.data
+    }
+}
+
 export async function getCurrentListeningSpoti() {
 
     let spotifyResponse = {
