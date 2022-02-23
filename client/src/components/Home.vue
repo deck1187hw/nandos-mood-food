@@ -321,7 +321,7 @@
     </div>
 
     <div class="modal font-mono" id="modal-history">
-      <div class="modal-box rounded-none relative">
+      <div class="modal-box rounded-none relative"  v-if="current.data.user">
         <Songhistory />
       </div>
     </div>
@@ -453,7 +453,6 @@ export default {
       }
     },
   },
-  created: async function () {},
   computed: {
     currentTrackId() {
       return this.current.id;
