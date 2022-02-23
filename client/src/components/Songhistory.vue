@@ -67,7 +67,7 @@
         "
         v-if="songs.length > 0"
       >
-        Last {{ songs.length > 0 ? songs.length : 50 }} songs listened
+        Last {{ songs.length > 0 ? songs.length : 50 }} songs listened by you
       </h3>
 
       <h3

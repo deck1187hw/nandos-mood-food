@@ -35,24 +35,29 @@
     </div>
 
     <div
-      class="
+      :class="`
         description
         mt-4
         border border-black
         px-3
         pb-3
         pt-3
-        bg-yellow-200
         relative
-      "
+        ${
+          you
+            ? 'bg-green-100 hover:bg-green-200'
+            : 'bg-yellow-100 hover:bg-yellow-200'
+        }
+        `"
     >
       <div
         class="absolute top-0 right-0 bg-green-600 text-white pl-3 pr-3 text-xs"
+        v-if="user.data.id === listenerUser.id"
       >
         You!
       </div>
       <strong class="font-normal">
-        Tagged by
+        Tagged by <br />
         <a
           :href="`https://open.spotify.com/user/${listenerUser.id}`"
           target="_blank"
@@ -62,7 +67,6 @@
         >
       </strong>
       <p class="text-xs">on {{ listenerUser.created.main }}</p>
-
       <div>
         <a
           href="#modal-listeners"
@@ -81,9 +85,12 @@ import { epochConverter } from "../utils/main";
 
 export default {
   name: "Menucover",
-  props: ["listeners"],
+  props: ["listeners", "user"],
   methods: {},
   computed: {
+    you() {
+      return this.user.data.id === this.listenerUser.id;
+    },
     lastListenedFood() {
       return this.listeners[0].foodData[0];
     },

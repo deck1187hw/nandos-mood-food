@@ -15,6 +15,7 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     id: "Push container image"
     args: ["push", "${_DOCKER_ART_REG}/${_SERVICE_NAME}:${_BUILD_ENV}"]
+    
   # Deploy container image as Cloud Run Service
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     id: "Deploy Cloud Run Image"

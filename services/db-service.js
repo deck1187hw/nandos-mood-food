@@ -39,7 +39,7 @@ class Db {
             let listeners = this.cache.get(`song_${id}`);
             const that = this;
             if (listeners == null) {
-                const dbQuery = await db.collection("songs").doc(id).collection("listeners").orderBy("created", "desc").limit(50).get();
+                const dbQuery = await db.collection("songs").doc(id).collection("listeners").orderBy("created", "asc").limit(50).get();
                 listeners = dbQuery.docs.map(doc => {
                     return {
                         id: doc.id,
@@ -93,21 +93,24 @@ class Db {
 
     async addSongListener(listener) {
         try {
-            let ref;
-            if (listener.username === null) {
-                ref = db.collection("songs").doc(listener.song.id).collection("listeners").doc();
-            } else {
-                ref = db.collection("songs").doc(listener.song.id).collection("listeners").doc(listener.username);
+
+            let result = false;
+
+            const ref = db.collection("songs").doc(listener.song.id).collection("listeners").doc(listener.username);
+
+            const listenerDb = await ref.get();
+            if (!listenerDb.exists) {
+                const data = {
+                    nandos_menu_item: listener.menuItem,
+                    created: new Date(),
+                    id: ref.id
+                }
+                result = await ref.set(data);
             }
-            const data = {
-                id: ref.id,
-                nandos_menu_item: listener.menuItem,
-                created: new Date()
-            }
-            const result = await ref.set(data);
             return result;
 
         } catch (error) {
+            console.error(error)
             throw error
         }
     }
@@ -172,7 +175,6 @@ class Db {
             // Cached metadata
             let menu = this.cache.get('menu');
             if (menu == null) {
-                console.log('Getting firestore...');
                 const dbQuery = await db
                     .collection("menu")
                     .get();

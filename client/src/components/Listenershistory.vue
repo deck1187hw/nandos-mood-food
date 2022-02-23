@@ -34,17 +34,18 @@
     </div>
     <div class="relative mt-8">
       <h3
-        class="font-bold text-md pr-3 pl-3 pt-1 pb-1"
+        class="font-bold text-md pr-3 pl-3 pt-1 pb-1 mb-3"
         v-if="listeners.length > 0"
       >
+        {{ songData.item.artists[0].name }} -
         {{ songData.item.name }}
       </h3>
 
       <div class="" v-if="listeners.length > 0">
         <table class="table table-compact w-full table-zebra">
           <tbody>
-            <tr v-for="listener in listeners" :key="listener.id">
-              <td>
+            <tr :key="listener.id" v-for="(listener, key) in listeners">
+              <td :class="`${key === 0 ? 'bg-green-600' : ''}`">
                 <div class="grid grid-cols-3 pr-2 pb-2">
                   <div>
                     <img
@@ -128,6 +129,7 @@ export default {
     },
     getSongListeners: async function () {
       const listeners = await getSongListeners(this.songData.item.id);
+
       this.listeners = _.get(listeners, "data") ? listeners.data : [];
     },
   },

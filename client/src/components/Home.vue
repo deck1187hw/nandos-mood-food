@@ -52,6 +52,7 @@
           xl:fixed
           font-mono
           sm:max-w-lg
+          
         "
       >
         <div v-if="action.main === 'OK'">
@@ -171,8 +172,9 @@
           pb-8
           bg-white bg-opacity-70
           shadow-xl
-          sm:max-w-xl sm:mx-auto sm:px-8
+          sm:max-w-2xl sm:mx-auto sm:px-8
           rounded-none
+          
         "
       >
         <div class="max-w-md mx-auto">
@@ -224,7 +226,10 @@
                 </div>
                 <div v-if="_.get(listeners, '[0].foodData[0]')">
                   <Transition name="fade" mode="out-in">
-                    <Menucover :listeners="listeners" />
+                    <Menucover
+                      :listeners="listeners"
+                      :user="current.data.user"
+                    />
                   </Transition>
                 </div>
               </div>
@@ -269,36 +274,7 @@
               </button>
 
               <div class="" v-if="current.data.user">
-                <div
-                  class="grid grid-cols-2 gap-3 place-items-center opacity-50"
-                >
-                  <div>
-                    <a
-                      href="https://www.nandos.co.uk/"
-                      target="_blank"
-                      title="Nando's"
-                    >
-                      <img
-                        src="../assets/barci.svg"
-                        style="width: 120px"
-                        class="items-center justify-center mb-5 nandos-logo"
-                      />
-                    </a>
-                  </div>
-                  <div>
-                    <a
-                      :href="current.data.user.data.external_urls.spotify"
-                      target="_blank"
-                      title="Spotify profile"
-                    >
-                      <img
-                        src="../assets/Spotify-Black-Logo.wine.svg"
-                        style="width: 140px"
-                        class="items-center justify-center pb-2"
-                      />
-                    </a>
-                  </div>
-                </div>
+                <Logos />
               </div>
             </div>
 
@@ -382,6 +358,7 @@ import Menucover from "./Menucover";
 import Hungry from "./Hungry";
 import Songhistory from "./Songhistory";
 import Listenershistory from "./Listenershistory";
+import Logos from "./Logos";
 
 const defaultSpotify = {
   image: null,
@@ -408,6 +385,7 @@ export default {
     Hungry,
     Songhistory,
     Listenershistory,
+    Logos,
   },
   data: function () {
     return {
@@ -512,11 +490,7 @@ export default {
 .artist-name {
   font-size: 900%;
 }
-.nandos-logo {
-  filter: gray; /* IE6-9 */
-  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
-  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
-}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
