@@ -42,45 +42,75 @@
       </h3>
 
       <div class="" v-if="listeners.length > 0">
-        <table class="table table-compact w-full table-zebra">
-          <tbody>
-            <tr :key="listener.id" v-for="(listener, key) in listeners">
-              <td :class="`${key === 0 ? 'bg-green-600' : ''}`">
-                <div class="grid grid-cols-3 pr-2 pb-2">
-                  <div>
-                    <img
-                      :src="getMenuImage(listener)"
-                      :key="getMenuImage(listener)"
-                      v-if="getMenuImage(listener)"
-                      class="h-20 ml-1"
-                      :alt="listener.foodData.displayName"
-                    />
-                  </div>
+        <div :key="listener.id" v-for="(listener, key) in listeners">
+          <div
+            :class="`
+                    overflow-hidden
+                    relative
+                    max-w-md
+                    mx-auto
+                    shadow-lg
+                    rounded-xl
+                    flex
+                    items-center z-50
+                    gap-6
+                    dark:bg-slate-800 dark:highlight-white/5
+                    ${key === 0 ? 'bg-green-600' : ''}
+                  `"
+          >
+            <img
+              :src="getMenuImage(listener)"
+              :key="getMenuImage(listener)"
+              v-if="getMenuImage(listener)"
+              class="absolute -left-6 w-28 h-28 rounded-full shadow-lg"
+              :alt="listener.foodData.displayName"
+            />
 
-                  <div class="col-span-2">
-                    <span
-                      class="text-xs italic tooltip"
-                      :data-tip="formatDate(listener.created._seconds).main"
-                      >{{
-                        formatDate(listener.created._seconds).relative
-                      }}</span
-                    >
-                    <br />
-                    by
-                    <a
-                      :href="`https://open.spotify.com/user/${listener.data.id}`"
-                      target="_blank"
-                      >{{ listener.data.id }}</a
-                    ><br />
-                    <span class="font-bold">{{
-                      listener.foodData[0].displayName
-                    }}</span>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <div class="absolute text-xs  top-1 right-2 z-50">
+              {{ formatDate(listener.created._seconds).main }}
+            </div>
+
+            <div class="min-w-0 py-5 pl-28 pr-5">
+              <div
+                class="
+                  text-slate-900
+                  font-medium
+                  text-sm
+                  sm:text-base
+                  dark:text-slate-200
+                "
+              >
+                <span class="text-md">{{
+                  listener.foodData[0].displayName
+                }}</span>
+              </div>
+              <div
+                class="
+                  text-slate-500
+                  font-medium
+                  text-sm
+                  sm:text-base
+                  dark:text-slate-400
+                "
+              >
+                <span class="text-xs">
+                  Tagged by
+                  <a
+                  class="underline"
+                    :href="`https://open.spotify.com/user/${listener.data.id}`"
+                    target="_blank"
+                    >{{ listener.data.id }}</a
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 pr-2 pb-2">
+            <div></div>
+
+            <div class="col-span-2"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
