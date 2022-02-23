@@ -67,7 +67,6 @@
           type="checkbox"
           id="agree_username"
         />
-        {{ agree_username }}
         <label
           class="form-check-label inline-block cursor-pointer dark:text-white"
           for="agree_username"
