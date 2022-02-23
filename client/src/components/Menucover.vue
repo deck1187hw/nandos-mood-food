@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative text-black">
     <a
       class="
         inset-0
@@ -34,17 +34,51 @@
       <p class="text-xs">{{ lastListenedFood.description }}</p>
     </div>
 
-    <div class="description mt-4">
-      <h3 class="font-bold">
-        Listened by <span class="">{{ listenerUser.id }}</span>
-      </h3>
-      <p class="text-xs">{{ listenerUser.created }}</p>
+    <div
+      class="
+        description
+        mt-4
+        border border-black
+        px-3
+        pb-3
+        pt-3
+        bg-yellow-200
+        relative
+      "
+    >
+      <div
+        class="absolute top-0 right-0 bg-green-600 text-white pl-3 pr-3 text-xs"
+      >
+        You!
+      </div>
+      <strong class="font-normal">
+        Tagged by
+        <a
+          :href="`https://open.spotify.com/user/${listenerUser.id}`"
+          target="_blank"
+          class="tooltip pl-1 pr-1 bg-black text-white"
+          data-tip="View Spotify profile"
+          ><span class="">{{ listenerUser.id }}</span></a
+        >
+      </strong>
+      <p class="text-xs">on {{ listenerUser.created.main }}</p>
+
+      <div>
+        <a
+          href="#modal-listeners"
+          class="mr-2 text-xs underline"
+          title="Show listeners"
+          >Song listeners
+        </a>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 // const DEFAULT_TIME = "dd MMMM yyyy HH:mm:ss";
+import { epochConverter } from "../utils/main";
+
 export default {
   name: "Menucover",
   props: ["listeners"],
@@ -54,11 +88,9 @@ export default {
       return this.listeners[0].foodData[0];
     },
     listenerUser() {
-      const date = Date(this.listeners[0].created._seconds);
-
       return {
         id: this.listeners[0].id,
-        created: date,
+        created: epochConverter(this.listeners[0].created._seconds),
       };
     },
   },

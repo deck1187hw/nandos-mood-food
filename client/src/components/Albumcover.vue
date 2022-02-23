@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative text-black">
     <a
       class="
         inset-0
@@ -34,7 +34,7 @@
     <div class="description mt-4">
       <h3 class="font-semibold">{{ spotify.songTitle }}</h3>
       <p class="text-xs">{{ spotify.artistName }}</p>
-      <p class="text-xs">{{ spotify.albumName }} - {{ spotify.albumYear }}</p>
+      <p class="text-xs">{{ spotify.albumName }}</p>
 
     </div>
   </div>

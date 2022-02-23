@@ -135,23 +135,28 @@
                   tracking-wide
                   text-sm text-white
                   font-normal
-                  text-center
+                  text-left
                 "
               >
                 {{ current.data.user.data.display_name }}
-                <small>
+                <div>
                   <a
                     href="javascript:void(0)"
                     class="mr-2 text-xs underline"
                     title="Logout"
                     v-on:click="logout"
                     >Logout</a
-                  ></small
-                >
-              </div>
+                  >
+                </div>
 
-              <div class="text-center top-date font-light text-xs mt-2 italic">
-                {{ now }}
+                <div>
+                  <a
+                    href="#modal-history"
+                    class="mr-2 text-xs underline"
+                    title="Show history"
+                    >Song history
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -338,7 +343,21 @@
         </div>
       </div>
     </div>
-    <pre>{{ listeners }}</pre>
+
+    <div class="modal font-mono" id="modal-history">
+      <div class="modal-box rounded-none relative">
+        <Songhistory />
+      </div>
+    </div>
+
+    <div class="modal font-mono" id="modal-listeners">
+      <div
+        class="modal-box rounded-none relative"
+        v-if="current.data.currentlyPlaying"
+      >
+        <Listenershistory :song-data="current.data.currentlyPlaying.data" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -361,6 +380,8 @@ import Notloggedin from "./Notloggedin";
 import Albumcover from "./Albumcover";
 import Menucover from "./Menucover";
 import Hungry from "./Hungry";
+import Songhistory from "./Songhistory";
+import Listenershistory from "./Listenershistory";
 
 const defaultSpotify = {
   image: null,
@@ -385,10 +406,13 @@ export default {
     Menucover,
     Notloggedin,
     Hungry,
+    Songhistory,
+    Listenershistory,
   },
   data: function () {
     return {
       listeners: [],
+      songs: [],
       envs: process.env,
       periTotal: null,
       action: {
@@ -416,12 +440,11 @@ export default {
     getToken: function () {
       return getToken();
     },
-    getListeners: async function () {
+    addListener: async function () {
       const listeners = await addListener(this.currentTrackId);
       this.listeners = _.get(listeners, "data.listeners")
         ? listeners.data.listeners
         : [];
-      console.log("LISTENERS", this.listeners);
     },
     refreshUi: function () {
       this.spotify.image = this.spoti.getImage();
@@ -465,7 +488,7 @@ export default {
     async currentTrackId() {
       this.spoti = new spotify(this.current);
       this.refreshUi();
-      this.getListeners();
+      this.addListener();
     },
   },
   mounted: function () {

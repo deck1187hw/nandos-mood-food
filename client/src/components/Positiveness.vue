@@ -3,11 +3,15 @@
     :class="`positiveness positiveness-${keyPositive} pt-1 pb-1`"
     v-if="audioFeatures"
   >
-     {{ mainText }}: {{ Math.ceil(audioFeatures[keyPositive] * 100) }}% - 
-    <span :class="`pl-1 pr-1 w-44	badge-${getPositiveness(keyPositive, audioFeatures).peri.title} text-white`" :style="`background-color:${getPositiveness(keyPositive, audioFeatures).peri.color}; border:none`"
-      >{{
+    {{ mainText }}: {{ Math.ceil(audioFeatures[keyPositive] * 100) }}% -
+    <span
+      :class="`pl-1 pr-1 w-44	badge-${
         getPositiveness(keyPositive, audioFeatures).peri.title
-      }}</span
+      } text-white`"
+      :style="`background-color:${
+        getPositiveness(keyPositive, audioFeatures).peri.color
+      }; border:none`"
+      >{{ getPositiveness(keyPositive, audioFeatures).peri.title }}</span
     >
     <Question :main-text="getExplanation()" class="invisible xl:visible" />
   </div>
@@ -15,7 +19,7 @@
 
 <script>
 import Question from "./Question";
-import {getPeriAttrs} from "../utils/main";
+import { getPeriAttrs } from "../utils/main";
 export default {
   components: {
     Question,
@@ -24,12 +28,12 @@ export default {
   data: function () {
     return {
       explanation: "",
-      positiveness: {peri: null, percentage: null, tf: null},
+      positiveness: { peri: null, percentage: null, tf: null },
     };
   },
   name: "Positiveness",
   created: async function () {
-    this.positiveness = {}
+    this.positiveness = {};
   },
   methods: {
     getExplanation() {
@@ -57,7 +61,7 @@ export default {
 };
 </script>
 <style>
-.badge-mild{
+.badge-mild {
   background-color: rgb(151, 195, 30);
   border: none;
 }

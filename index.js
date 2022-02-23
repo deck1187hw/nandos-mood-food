@@ -68,6 +68,9 @@ router.post('/song/:id', async function (req, res) {
         // Add / Override song listener
         const songListener = await dbN.addSongListener({ song: song, username: user.id, menuItem: menuItem });
 
+        // Add / Override user songs
+        const userSongs = await dbN.addUserSong({ song: song, username: user.id, menuItem: menuItem });
+
         // Flush Cache for this song
         dbN.clearCache(`song_${song.id}`);
 
@@ -101,6 +104,31 @@ router.get('/song/:id/listeners', async function (req, res) {
         const listeners = await dbN.getListeners(req.params['id']);
 
         return res.status(200).json(listeners);
+
+
+    } catch (error) {
+        console.error(JSON.stringify(error))
+        return res.status(500).json(error);
+    }
+
+});
+
+router.get('/user/songs', async function (req, res) {
+    try {
+        if (!_.get(req, 'headers.authorization')) {
+            return res.status(401).json({ error: "Spotify authorization not present" });
+        }
+
+        // Authorize user
+        const spoti = new spotify(req.headers.authorization);
+
+        // Check if user exists
+        const user = await spoti.getUser();
+
+        // Get all (cached) songs
+        const songs = await dbN.getSongs(user.id);
+
+        return res.status(200).json(songs);
 
 
     } catch (error) {

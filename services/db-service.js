@@ -39,7 +39,7 @@ class Db {
             let listeners = this.cache.get(`song_${id}`);
             const that = this;
             if (listeners == null) {
-                const dbQuery = await db.collection("songs").doc(id).collection("listeners").get();
+                const dbQuery = await db.collection("songs").doc(id).collection("listeners").orderBy("created", "desc").limit(50).get();
                 listeners = dbQuery.docs.map(doc => {
                     return {
                         id: doc.id,
@@ -52,9 +52,38 @@ class Db {
                 for (let i = 0; i < listeners.length; i++) {
                     listeners[i].foodData = await this.getMenuItem(listeners[i].data.nandos_menu_item);
                 }
-                this.cache.set(`song_${id}`, listeners, 86400); // time-to-live is set 1 day will be flushed on every update.
+                this.cache.set(`song_${id}`, listeners, 1); // time-to-live is set 1 day will be flushed on every update.
             }
             return listeners;
+
+        } catch (error) {
+            console.error('ERROR ', error)
+            throw error;
+        }
+    }
+
+    async getSongs(id) {
+        try {
+            // Cached users by user.id
+            let songs = this.cache.get(`user_${id}`);
+            const that = this;
+            if (songs == null) {
+                const dbQuery = await db.collection("users").doc(id).collection("songs").orderBy("created", "desc").limit(50).get();
+                songs = dbQuery.docs.map(doc => {
+                    return {
+                        id: doc.id,
+                        data: doc.data(),
+                        created: doc._createTime,
+                        foodData: {}
+                    }
+                });
+                // Populate Food
+                for (let i = 0; i < songs.length; i++) {
+                    songs[i].foodData = await this.getMenuItem(songs[i].data.nandos_menu_item);
+                }
+                this.cache.set(`user_${id}`, songs, 60); // time-to-live is set 1 day will be flushed on every update.
+            }
+            return songs;
 
         } catch (error) {
             console.error('ERROR ', error)
@@ -72,7 +101,8 @@ class Db {
             }
             const data = {
                 id: ref.id,
-                nandos_menu_item: listener.menuItem
+                nandos_menu_item: listener.menuItem,
+                created: new Date()
             }
             const result = await ref.set(data);
             return result;
@@ -80,8 +110,29 @@ class Db {
         } catch (error) {
             throw error
         }
+    }
 
+    async addUserSong(listener) {
+        try {
+            let ref;
+            if (listener.song.id === null) {
+                ref = db.collection("users").doc(listener.username).collection("songs").doc();
+            } else {
+                ref = db.collection("users").doc(listener.username).collection("songs").doc(listener.song.id);
+            }
+            const data = {
+                id: ref.id,
+                nandos_menu_item: listener.menuItem,
+                song: listener.song,
+                created: new Date()
+            }
+            const result = await ref.set(data);
+            return result;
 
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
     }
 
 
