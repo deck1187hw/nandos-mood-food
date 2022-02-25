@@ -315,7 +315,7 @@
           Built with
           <img src="../assets/chillie.svg" style="width: 36px" class="inline" />
           by
-          <a href="https://miguelpuig.com/" target="_blank"> deck1187hw</a>
+          <a href="https://github.com/deck1187hw/nandos-mood-food" target="_blank"> deck1187hw</a>
         </div>
       </div>
     </div>

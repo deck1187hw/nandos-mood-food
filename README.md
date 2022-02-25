@@ -2,6 +2,8 @@
 
 Find out the mood of your currently played Spotify song based on its valance, danceability, and energy.
 
+Tag songs and find out some (random) food to order.
+
 [https://perimood.miguelpuig.com/](https://perimood.miguelpuig.com/)
 
 ![demo](assets/demo.gif)
